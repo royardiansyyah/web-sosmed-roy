@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roy Ardiansyah - Sosial Media</title>
+  <style>
+    /* Reset margin dan padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f0f0f0;
+      background: #121212;
+    }
+
+    #background-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-color: #121212;
+      display: block;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+      background: transparent;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      text-shadow: 0 0 10px rgba(255,255,255,0.7);
+    }
+
+    p {
+      font-size: 1.3em;
+      margin-bottom: 1.5em;
+      text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .social-icons a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .social-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100px;
+      padding: 15px;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    .social-icon:hover {
+      transform: scale(1.05);
+    }
+
+    .social-icon:hover .label {
+      font-weight: bold;
+    }
+
+    .social-icon img {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 3px rgba(255,255,255,0.7));
+    }
+
+    a[href*="tiktok"] .social-icon:hover {
+      background-color: #000;
+      color: #fff;
+    }
+
+    a[href*="instagram"] .social-icon:hover {
+      background-color: #e1306c;
+      color: #fff;
+    }
+
+    a[href*="youtube"] .social-icon:hover {
+      background-color: #ff0000;
+      color: #fff;
+    }
+
+    .label {
+      font-size: 1em;
+      transition: font-weight 0.2s;
+      user-select: none;
+      text-shadow: 0 0 5px rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="background-canvas"></canvas>
+
+  <h1>Roy Ardiansyah</h1>
+  <p>Ikuti saya di platform sosial media berikut:</p>
+
+  <div class="social-icons">
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@royardiansyyah?_t=ZS-8wVuUpenp8q&_r=1" target="_blank" rel="noopener noreferrer">
+      <div class="social-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png" alt="TikTok" style="border-radius: 15%;">
+        <div class="label">TikTok</div>
+      </div>
+    </a>
+    
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/royardiansyyah?igsh=MXVhYTFibHFldnk1Yg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
+      <div class="social-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+        <div class="label">Instagram</div>
+      </div>
+    </a>
+
+    <!-- YouTube -->
+    <a href="https://youtube.com/@royardiansyah3329?si=tPRZUFTbq4XFLXCF" target="_blank" rel="noopener noreferrer">
+      <div class="social-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube">
+        <div class="label">YouTube</div>
+      </div>
+    </a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('background-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const particles = [];
+    const particleCount = 80;
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.size = 1 + Math.random() * 2.5;
+        this.opacity = 0.1 + Math.random() * 0.3;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if(this.x < 0 || this.x > width) this.vx *= -1;
+        if(this.y < 0 || this.y > height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    function connectParticles() {
+      const maxDistance = 150;
+      for(let i = 0; i < particleCount; i++) {
+        for(let j = i + 1; j < particleCount; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if(dist < maxDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 255, 255, ${(maxDistance - dist) / maxDistance * 0.2})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    for(let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    animate();
+  </script>
+</body>
+</html>
